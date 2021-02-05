@@ -6,8 +6,13 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 
-def view_func(request, arg1=None):
-    return render(request, 'index.html', context={'arg1': arg1})
+def view_func(request):
+    directory = 'C:\\Program Files\\netology_homework_all_courses\\Python_prof34_course\\z_django_block\\2_Request_Handling\\file_server\\files'
+    files = os.listdir(directory)
+    return render(request, 'index.html', {'files': files,
+                                          'ctime': datetime.datetime(2018, 1, 1),
+                                          'mtime': datetime.datetime(2018, 1, 2)
+                                          })
 
 
 def file_list(request):
@@ -30,10 +35,18 @@ def file_list(request):
     return render(request, template_name, context)
 
 
-def file_content(request, name):
+def file_content(request, docnum):
+    print(docnum)
+    file = open(
+        f'C:\\Program Files\\netology_homework_all_courses\\Python_prof34_course\\z_django_block\\2_Request_Handling\\file_server\\files\\{docnum}')
+    template_name = 'file_content.html'
     # Реализуйте алгоритм подготавливающий контекстные данные для шаблона по примеру:
     return render(
-        request,
-        'file_content.html',
-        context={'file_name': 'file_name_1.txt', 'file_content': 'File content!'}
+        request, template_name, {'file_name': docnum,
+                                 'file_content': file}
     )
+    # return HttpResponse(f'Hello from file {docnum}')
+
+
+def view_file(request):
+    return HttpResponse(f'Hello from file!')
