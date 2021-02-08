@@ -32,7 +32,20 @@ def bus_stations(request):
 
     msg = page.object_list
 
+    current_page = page.number
+    all_pages = paginator.num_pages
+
+    try:
+        prev_page_url = page.previous_page_number
+    except EmptyPage:
+        prev_page_url = None
+    next_page_url = page.next_page_number
+
     return render(request, 'index.html', context={
         'bus_stations': msg,
         'page': page,
+        'current_page': current_page,
+        'prev_page_url': prev_page_url,
+        'next_page_url': next_page_url,
+        'all_pages': all_pages
     })
